@@ -111,6 +111,20 @@ def NodeCost(p1 : Pose, p2 : Pose):
         return total_cost
 
 
+def Steer(p_from : Pose, x, L , K):
+    d_min = np.inf
+    k_opt = None
+    p_new = None
+    for k in K:
+        p = ExtendClothoid(p_from, L, k)
+        d = np.sqrt((p.x - x[0])**2 + (p.y - x[1])**2)
+        if (d < d_min):
+            d_min = d
+            k_opt = k 
+            p_new = p
+    
+    return p_new
+
 p1 = Pose(0,0, np.radians(30))
 p2 = Pose(5,0, np.radians(45))
 cost = NodeCost(p1, p2)
